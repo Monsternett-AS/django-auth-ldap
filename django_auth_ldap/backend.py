@@ -438,7 +438,7 @@ class _LDAPUser(object):
             ## AUTH_LDAP_BIND_AS_AUTHENTICATING_USER and
             ## AUTH_LDAP_USER_SEARCH are set, then re-populate the
             ## user DN with the result of the search.
-            if sticky and self.settings.AUTH_LDAP_USER_SEARCH:
+            if sticky and self.settings.USER_SEARCH:
                 self._search_for_user_dn()
 
         except ldap.INVALID_CREDENTIALS:
