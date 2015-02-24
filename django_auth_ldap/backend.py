@@ -432,6 +432,15 @@ class _LDAPUser(object):
             sticky = self.settings.BIND_AS_AUTHENTICATING_USER
 
             self._bind_as(self.dn, password, sticky=sticky)
+
+            # patch from: https://bitbucket.org/psagers/django-auth-ldap/issue/21/cant-bind-and-search-on-activedirectory
+            ## this is the added code, which if both
+            ## AUTH_LDAP_BIND_AS_AUTHENTICATING_USER and
+            ## AUTH_LDAP_USER_SEARCH are set, then re-populate the
+            ## user DN with the result of the search.
+            if sticky and self.settings.AUTH_LDAP_USER_SEARCH:
+                self._search_for_user_dn()
+
         except ldap.INVALID_CREDENTIALS:
             raise self.AuthenticationFailed("user DN/password rejected by LDAP server.")
 
